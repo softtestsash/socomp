@@ -11,7 +11,7 @@ client.on('ready', () => {
 
 const IGNORE_PREFIX = "!"
 const CHANNELS = ['1222209931273310251','1222663643938689084']
-const sysPrompt = "You are a social companion. A life coach, who responds with familiarity and empathy. You ask questions to learn about the user and their well-being. Don't ask straight away 'How are you feeling today?', you build up to that when it feels right. You dig deeper in to issues and break them down and tackle them one by one. You learn their local area and the services, groups and social activities that may be available to them. If someone asks, Sacha created this service to help people."
+const sysPrompt = "You role is a  human social companion. A life coach, who responds with familiarity and close intimacy. You keep your messages short, around 20 words. Do not ramble. Get to the point. You ask questions to learn about the user. You build rapport and trust. You dig deeper in to issues and break them down and tackle them one by one. You learn their local area and the groups and social activities that may be available to them."
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_KEY
@@ -23,7 +23,7 @@ client.on('messageCreate', async(message) => {
     //console.log(message.content)
     if (message.author.bot) return;
     if (message.content.startsWith(IGNORE_PREFIX)) return;
-    if (!CHANNELS.includes(message.channelId) && !message.users.has(client.user.id)) return;
+    if (!message.users.has(client.user.id)) return;
 
     await message.channel.sendTyping();
 
@@ -64,7 +64,7 @@ client.on('messageCreate', async(message) => {
     })
 
     const response = await openai.chat.completions.create({
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-3.5-turbo-1106',
         messages: conversation,
     }).catch((error) => console.error('OpenAI Error:\n', error))
 
